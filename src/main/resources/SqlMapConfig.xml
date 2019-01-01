@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="jdbc"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+				<property name="url" value="jdbc:mysql:///mybatis?serverTimezone=Asia/Shanghai&amp;useSSL=false"/>
+				<property name="username" value="root"/>
+				<property name="password" value="root"/>
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<mappers>
+		<mapper resource="cn/itcast/entity/Order.xml"/>
+		<mapper resource="cn/itcast/entity/User.xml"/>
+		<mapper resource="cn/itcast/entity/OrderDetail.xml"/>
+		<mapper resource="cn/itcast/entity/Item.xml"/>
+		
+		<!-- 配置一下dao层的包，可以实现自动扫描
+			【注意】 映射文件需要和 dao 层的接口名一致，位置一起， namespace 要与接口全路径名绑定， 方法名和标签的id绑定
+		 -->
+		<package name="cn.itcast.mapper"/>
+	</mappers>
+</configuration>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="order">
+	<resultMap type="cn.itcast.entity.Order" id="OrderResultMap">
+		<id column="oid" property="oid"/>
+		<result column="number" property="number"/>
+		<result column="createtime" property="createTime"/>
+		<result column="note" property="note"/>
+		
+		<!-- 设置一对一关联关系  -->
+		<association property="user" javaType="cn.itcast.entity.User" >
+			<id column="uid" property="uid"/>
+			<result column="username" property="username"/>
+			<result column="birthday" property="birthday"/>
+			<result column="sex" property="sex"/>
+			<result column="address" property="address"/>
+		</association>
+	</resultMap>
+	<select id="findByUserId" parameterType="Integer" resultMap="OrderResultMap" >
+		select * from orders o, user u
+		where o.user_id = u.uid
+		and u.uid = #{uid}
+	</select>
+</mapper>

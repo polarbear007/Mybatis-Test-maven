@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+	<select id="findUserByUid" parameterType="Integer" resultType="cn.itcast.entity.User">
+		select * from user where uid = #{uid}
+	</select>
+	
+	<select id="findUserByUsername" parameterType="String" resultType="cn.itcast.entity.User">
+		select * from user where username like "%"#{username}"%";
+	</select>
+	
+	<insert id="addUser" parameterType="cn.itcast.entity.User">
+		<selectKey keyProperty="uid" resultType="Integer" order="AFTER">
+			select last_insert_id();
+		</selectKey>
+		insert into user(username, birthday, sex, address) 
+		   values(#{username}, #{birthday}, #{sex}, #{address})
+	</insert>
+	
+	<resultMap type="cn.itcast.entity.User" id="UserResultMap">
+		<id column="uid" property="uid"/>
+		<result column="username" property="username"/>
+		<result column="birthday" property="birthday"/>
+		<result column="sex" property="sex"/>
+		<result column="address" property="address"/>
+		
+		<!-- 设置一对多关联 -->
+		<collection property="orderList" javaType="List" ofType="cn.itcast.entity.Order">
+			<id column="oid" property="oid"/>
+			<result column="number" property="number"/>
+			<result column="createtime" property="createTime"/>
+			<result column="note" property="note"/>
+		</collection>
+	</resultMap>
+	
+	<select id="findUserByOid" parameterType="Integer" resultMap="UserResultMap">
+		select u.* from user u, orders o
+		where u.uid = o.user_id
+		and o.oid = #{oid}
+	</select>
+	
+	<resultMap type="cn.itcast.entity.User" id="findItemByUserIdResultMap">
+		<id column="uid" property="uid"/>
+		<result column="username" property="username"/>
+		<result column="birthday" property="birthday"/>
+		<result column="sex" property="sex"/>
+		<result column="address" property="address"/>
+		
+		<!-- 配置与order 的对应关系： 一对多  -->
+		<collection property="orderList" ofType="cn.itcast.entity.Order">
+			<id column="oid" property="oid"/>
+			<result column="number" property="number"/>
+			<result column="createtime" property="createTime"/>
+			<result column="note" property="note"/>
+			
+			<!-- 配置与 orderDetail 的对应关系： 一对多 -->			
+			<collection property="orderDetailList" ofType="cn.itcast.entity.OrderDetail">
+				<id column="od_id" property="odId"/>
+				<result column="items_num" property="ItemsNum"/>
+				
+				<!-- 配置与 Item 的对应关系： 一对一关系  -->
+				<association property="item" javaType="cn.itcast.entity.Item">
+					<id column="item_id" property="itemId"/>
+					<result column="item_name" property="itemName"/>
+					<result column="price" property="price"/>
+					<result column="detail" property="detail"/>
+					<result column="pic" property="pic"/>
+					<result column="item_create_time" property="itemCreateTime"/>
+				</association>
+			</collection>
+		</collection>
+	</resultMap>
+	
+	<select id="findItemByUserId" parameterType="Integer" resultMap="findItemByUserIdResultMap">
+		select * from user u, orders o, orderdetail od, items i
+		where u.uid = o.user_id
+		and  o.oid = od.orders_id
+		and od.items_id = i.item_id
+		and u.uid = #{uid}
+	</select>
+	
+</mapper>
