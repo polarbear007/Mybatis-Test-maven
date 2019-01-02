@@ -4,10 +4,69 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.itcast.mapper.StudentMapper">
 	<select id="findBysid" parameterType="integer" resultType="cn.itcast.entity.Student">
-		select * from t_student where sid = #{sid}
+		select * from t_student where sid = #{value }
 	</select>
 	
 	<insert id="addStudent" parameterType="cn.itcast.entity.Student">
-		insert into t_student (sname, age) values(#{sname}, #{age});
+		insert into t_student (sname, age) values(${sname }, ${age });
 	</insert>
+	
+	<insert id="addStudents">
+		insert into t_student (sname, age) values
+		<foreach collection="array" item="stu" separator=",">
+			(#{stu.sname }, #{stu.age})
+		</foreach>
+	</insert>
+	
+	<insert id="addStudentCollection">
+		insert into t_student (sname, age) values
+		<foreach collection="col" item="stu" separator=",">
+			(#{stu.sname }, #{stu.age})
+		</foreach>
+	</insert>
+	
+	<insert id="addStudentList">
+		insert into t_student (sname, age) values
+		<foreach collection="collection" item="stu" separator=",">
+			(#{stu.sname }, #{stu.age})
+		</foreach>
+	</insert>
+	
+	<update id="updateByMap">
+		update t_student set sname = #{sname }, age = #{age }
+		where sid = #{sid }
+	</update>
+	
+	<insert id="addStudentVO">
+		<!-- 读取vo 对象中中的pojo对象： stu 的值  -->
+		insert into t_student (sname, age) values (#{stu.sname }, #{stu.age })
+		
+		<!-- 遍历 vo 对象中的数组： stus 的值-->
+		<foreach collection="stus" item="stu" separator="," open=",">
+			(#{stu.sname }, #{stu.age})
+		</foreach>
+		
+		
+		<!-- 遍历 vo 对象中的list集合： stuList 的值 -->
+		<foreach collection="stuList" item="stu" separator="," open=",">
+			(#{stu.sname }, #{stu.age})
+		</foreach>
+		
+		
+		<!-- 遍历vo 对象中的map 集合： stuMap 的值 -->
+		<foreach collection="stuMap.values()" item="stu" separator="," open=",">
+			(#{stu.sname }, #{stu.age})
+		</foreach>
+		
+	</insert>
+	
+	<update id="updateStudent1">
+		update t_student set sname = #{1 }, age = #{2 }
+		where sid = #{0 }
+	</update>
+	
+	<update id="updateStudent2">
+		update t_student set sname = #{sname }, age = #{age }
+		where sid = #{sid }
+	</update>
 </mapper>
