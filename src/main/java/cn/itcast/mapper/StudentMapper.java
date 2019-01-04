@@ -19,4 +19,11 @@ public interface StudentMapper {
 	public abstract void addStudentVO(VO vo);
 	public abstract void updateStudent1(Integer sid, String sname, Integer age);
 	public abstract void updateStudent2(@Param("sid")Integer sid, @Param("sname")String sname, @Param("age")Integer age);
+	
+	public abstract void addBatch1(List<Student> stuList);
+	public abstract void addBatch2(List<Student> stuList);
+	
+	public abstract void updateBatch(List<Student> stuList);
+	public abstract void deleteBatch(List<Student> stuList);
+	public abstract void test();
 }

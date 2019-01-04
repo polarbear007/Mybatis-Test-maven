@@ -8,7 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<insert id="addStudent" parameterType="cn.itcast.entity.Student">
-		insert into t_student (sname, age) values(${sname }, ${age });
+		insert into t_student (sname, age) values(#{sname }, #{age })
 	</insert>
 	
 	<insert id="addStudents">
@@ -27,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<insert id="addStudentList">
 		insert into t_student (sname, age) values
-		<foreach collection="collection" item="stu" separator=",">
+		<foreach collection="list" item="stu" separator=",">
 			(#{stu.sname }, #{stu.age})
 		</foreach>
 	</insert>
@@ -69,4 +69,54 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update t_student set sname = #{sname }, age = #{age }
 		where sid = #{sid }
 	</update>
+	
+	<!-- 演示一下mysql 批量插入的两种思路
+		insert into t_student (sname, age) values (), (), ()
+	 -->
+	 <insert id="addBatch1">
+	 	 insert into t_student (sname, age) values
+	 	 <foreach collection="list" item="stu" separator=",">
+	 	 	(#{stu.sname }, #{stu.age } )
+	 	 </foreach>
+	 </insert>
+	 
+	 <!-- 演示一下mysql 批量插入的两种思路
+		insert into t_student (sname, age) values ();
+		insert into t_student (sname, age) values ();
+		.......
+		优点: 非常直观！！！
+		缺点： 需要发送多条sql语句！！！
+		要求： 需要在连接数据库的 url 添加一个参数：  allowMultiQueries=true
+	 -->
+	 
+	 <insert id="addBatch2">
+		 <foreach collection="list" item="stu" >
+	 	 	insert into t_student (sname, age) values (#{stu.sname }, #{stu.age } );
+	 	 </foreach>
+	 </insert>
+	 
+	 <update id="updateBatch" >
+	 	<foreach collection="list" item="stu" >
+	 	 	<if test="stu.sid != null">
+	 	 		update t_student
+		 	 	<set>
+		 	 		<if test="stu.sname != null">
+		 	 			sname = #{stu.sname },
+		 	 		</if>
+		 	 		<if test="stu.age != null">
+		 	 			age = #{stu.age }  	
+		 	 		</if>
+		 	 	</set>
+		 	 	where sid = #{stu.sid };
+	 	 	</if>
+	 	 </foreach>
+	 </update>
+	 
+	 <delete id="deleteBatch">
+	 	<foreach collection="list" item="stu" >
+	 		<if test="stu.sid != null">
+	 			delete from t_student where sid = #{stu.sid };
+	 		</if>
+	 	</foreach>
+	 </delete>
 </mapper>
