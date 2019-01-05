@@ -11,10 +11,9 @@ import org.junit.Test;
 import cn.itcast.entity.Student;
 import cn.itcast.mapper.StudentMapper;
 
-// 需要配合笔记 《补充一下Mybatis简单查询的执行流程.doc》 一起看
-
-public class MybatisTest4 {
-	// 演示 mybatis 查询的一般过程 
+// 测试一下 Mybatis 的插件要怎么去写
+// 请配合《补充一下Mybatis插件原理.doc》 笔记去看， 测试类本身没多大意义
+public class MybatisTest5 {
 	@Test
 	public void test1() throws IOException {
 		// 创建工厂对象

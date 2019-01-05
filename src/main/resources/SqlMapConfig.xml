@@ -3,9 +3,17 @@
 PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+    
 	<settings>
 		<setting name="useActualParamName" value="false"/>
 	</settings> 
+	<plugins>
+		<plugin interceptor="cn.itcast.interceptor.MyFirstInterceptor">
+		    <!-- 我们可在核心配置文件添加一些参数传给拦截器，了解一下就好了 -->
+			<property name="hello" value="1234"/>
+		</plugin>
+		<plugin interceptor="cn.itcast.interceptor.MySecondInterceptor"></plugin>
+	</plugins>
 	<environments default="development">
 		<environment id="development">
 			<transactionManager type="jdbc"/>
