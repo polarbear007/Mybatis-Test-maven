@@ -123,4 +123,45 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 <select id="findAll" resultType="cn.itcast.entity.Student">
 	 	select * from t_student
 	 </select>
+	 
+	<!-- 演示一下如何调用存储过程
+		【注意】  调用存储过程需要声明  statementType 为 callable 类型
+		                 然后把sql 语句使用  {}   包起来
+		 【注意】 如果是mysql 数据库，存储过程中有执行一个查询语句，那么我们不需要把这个查询的结果集赋值给一个Out类型的变量
+		                可以直接在select 标签上面声明一个  resultType 或者  resultMap  来接收查询的结果集
+	 -->
+	<select id="testProcedure1" statementType="CALLABLE" resultType="cn.itcast.entity.Student" >
+		{
+			call test_pro()
+		}
+	</select>
+	
+	<select id="testProcedure2" statementType="CALLABLE" resultType="cn.itcast.entity.Student">
+		{
+			call test_pro2(
+							#{start_id, mode=IN, jdbcType=INTEGER },
+							#{end_id, mode=IN, jdbcType=INTEGER }
+							)
+		}
+	</select>
+	
+	<!-- 不需要写返回值类型，因为是void 类型 -->
+	<select id="testProcedure3" statementType="CALLABLE">
+		{
+			call test_pro3(
+			                 #{stu_count, mode=OUT, jdbcType=INTEGER },
+			                 #{age_avg, mode=OUT, jdbcType=DOUBLE }
+			               )
+		}
+	</select>
+	
+	
+	<select id="testProcedure4" statementType="CALLABLE">
+		{
+			call test_pro3(
+			                 #{stu_count, mode=OUT, jdbcType=INTEGER },
+			                 #{age_avg, mode=OUT, jdbcType=DOUBLE }
+			               )
+		}
+	</select>
 </mapper>

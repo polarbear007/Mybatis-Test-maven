@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 
 import cn.itcast.entity.Student;
 import cn.itcast.entity.VO;
+import cn.itcast.entity.VO2;
 
 public interface StudentMapper {
 	public abstract Student findBysid(Integer sid);
@@ -28,4 +29,9 @@ public interface StudentMapper {
 	public abstract void test();
 	
 	public abstract List<Student> findAll();
+	
+	public abstract List<Student> testProcedure1();
+	public abstract List<Student> testProcedure2(@Param("start_id")Integer start_id, @Param("end_id")Integer end_id);
+	public abstract void testProcedure3(@Param("stu_count")Integer stu_count, @Param("age_avg")Double age_avg);
+	public abstract void testProcedure4(VO2 vo);
 }
