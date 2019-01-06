@@ -21,6 +21,7 @@ import cn.itcast.entity.Student;
 import cn.itcast.mapper.StudentMapper;
 
 // 演示分页插件的使用
+// 可以配置我们的《补充一下pageHelper插件.doc》 笔记来看
 public class MybatisTest6 {
 	private SqlSessionFactory factory = null;
 	private SqlSession sqlSession = null;
@@ -290,6 +291,30 @@ public class MybatisTest6 {
 		if(Math.random() > 1) {
 			PageHelper.startPage(3, 5);
 			list = mapper.findAll();
+		}
+		
+		// 因为上一个查询没有执行，所以我们保存到 本地线程的Page 对象参数并没有被使用
+		// 所以留到了这次查询的时候再使用
+		// 而本次查询根本就不需要这些参数，从而很可能就会出现奇怪的问题
+		Student stu = mapper.findBysid(1);
+		System.out.println(stu);
+	}
+	
+	
+	// 也许你觉得上面的处理还不够让你放心，那么你可以通过一个 try... finally 代码块，显式地清空本地线程中的 page 对象
+	// 理论上上面的处理确实不能够保证万无一失，比如说你的 findAll() 执行到一半就出错了，还没有真正走到
+	// StatementHandler 对象被重写的那个  query 方法就已经抛异常好，那么本地线程的那个 page 对象还是有可能不会被清理干净
+	@Test
+	public void test15() {
+		StudentMapper mapper = sqlSession.getMapper(StudentMapper.class);
+		List<Student> list = null;
+		if(Math.random() > 1) {
+			try {
+				PageHelper.startPage(3, 5);
+				list = mapper.findAll();
+			} finally {
+				PageHelper.clearPage();
+			}
 		}
 		
 		// 因为上一个查询没有执行，所以我们保存到 本地线程的Page 对象参数并没有被使用
