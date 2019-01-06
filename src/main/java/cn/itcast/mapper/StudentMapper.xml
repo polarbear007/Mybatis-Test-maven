@@ -119,4 +119,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 		</if>
 	 	</foreach>
 	 </delete>
+	 
+	 <select id="findAll" resultType="cn.itcast.entity.Student">
+	 	select * from t_student
+	 </select>
 </mapper>

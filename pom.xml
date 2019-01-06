@@ -47,5 +47,15 @@
 		<artifactId>mysql-connector-java</artifactId>
 		<version>8.0.12</version>
 	</dependency>
+	
+	<!-- 导入pagehelper 的jar 包，我用最新的
+		使用maven 的好处在于，你只需要配置 核心包，就会自动导入 jsqlparser 这个依赖包
+		而且不需要关联依赖包和核心包之间的版本问题
+	 -->
+	<dependency>
+    <groupId>com.github.pagehelper</groupId>
+    <artifactId>pagehelper</artifactId>
+    <version>5.1.8</version>
+</dependency>
   </dependencies>
 </project>

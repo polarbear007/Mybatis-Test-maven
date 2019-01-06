@@ -26,4 +26,6 @@ public interface StudentMapper {
 	public abstract void updateBatch(List<Student> stuList);
 	public abstract void deleteBatch(List<Student> stuList);
 	public abstract void test();
+	
+	public abstract List<Student> findAll();
 }
