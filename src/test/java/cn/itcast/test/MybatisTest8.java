@@ -33,6 +33,9 @@ public class MybatisTest8 {
 			session.insert("cn.itcast.mapper.StudentMapper.addStudent", stu);
 		}
 		
+		// 执行完批量操作以后，记得调用 flushStatements() 方法来清除缓存
+		session.flushStatements();
+		
 		session.commit();
 		session.close();
 	}
@@ -43,7 +46,10 @@ public class MybatisTest8 {
 	public void test2() throws IOException {
 		SqlSessionFactory factory = new SqlSessionFactoryBuilder()
 				                    .build(Resources.getResourceAsStream("SqlMapConfig.xml"));
-		SqlSession session = factory.openSession(ExecutorType.BATCH);
+		// SqlSession session = factory.openSession(ExecutorType.BATCH);
+		
+		// 其实像这种添加个十来条记录的，完全用不到什么批量执行器
+		SqlSession session = factory.openSession();
 		List<Student> stuList = new ArrayList<>();
 		// 创建学生对象
 		Student stu1 = new Student();

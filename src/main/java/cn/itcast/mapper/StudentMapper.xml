@@ -3,6 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.itcast.mapper.StudentMapper">
+	<cache></cache>
 	<select id="findBysid" parameterType="integer" resultType="cn.itcast.entity.Student">
 		select * from t_student where sid = #{value }
 	</select>

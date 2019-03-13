@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
     
 	<settings>
 		<setting name="useActualParamName" value="false"/>
+		<setting name="cacheEnabled" value="true"/>
 		<!--  <setting name="defaultExecutorType" value="BATCH"/> -->
 	</settings> 
 	<!-- 
